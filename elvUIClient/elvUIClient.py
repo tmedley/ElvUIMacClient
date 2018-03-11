@@ -23,8 +23,10 @@ import json
 # // TODO: add logging enable/disable to the gui
 
 loggingLevel = logging.INFO
+loggingFormat = '%(asctime)s %(levelname)s %(message)s'
 logging.basicConfig(filename='elvUIMacClient.log', level=loggingLevel,
-                    format='%(asctime)s:%(levelname)s:%(message)s')
+                    format=loggingFormat)
+logging.getLogger().setLevel(logging.INFO)
 
 
 class ElvUIClientApp():
