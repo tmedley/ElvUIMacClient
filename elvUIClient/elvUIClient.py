@@ -8,7 +8,7 @@
 #    3/7/2018
 #    // TODO:
 
-
+import logging
 import platform
 import subprocess
 import os
@@ -17,13 +17,39 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+# setup logging to a file for testing and debugging
+# change loggingLevel variable to change the debug level
+# maybe add an option in the gui to toggle this?
+# // TODO: add logging enable/disable to the gui
+
+loggingLevel = logging.INFO
+logging.basicConfig(filename='elvUIMacClient.log', level=loggingLevel,
+                    format='%(asctime)s:%(levelname)s:%(message)s')
+
 
 class ElvUIClientApp():
     ''' client to keep the ElvUI Addon updated on macOS '''
 
     def getMacOSVersion(self):
         # Get current macOS version
-        macOSVersion = platform.mac_ver()[0]
+        rawMacOSVersion = platform.mac_ver()[0]
+        major = rawMacOSVersion[0:2]
+        minor = rawMacOSVersion[3:5]
+
+        # Determine "Code Name", just because. WoW only currently supports
+        # macOS 10.10 through 10.13 today, so thats all I captured.
+        print('major ', major)
+        print('minor ', minor)
+        if minor == '10':
+            codeName = 'Yosemite'
+        elif minor == '11':
+            codeName = 'El Capitan'
+        elif minor == '12':
+            codeName = 'Sierra'
+        elif minor == '13':
+            codeName = 'High Sierra'
+        macOSVersion = codeName + ' ' + rawMacOSVersion
+        logging.info('macOSVersion installed: {}'.format(macOSVersion))
         return macOSVersion
 
     def getWoWVersion(self):
@@ -107,7 +133,7 @@ class ElvUIClientApp():
         # Enter your Username:
         #''')
 
-        #tukPassword=input('Enter your Password: ')
+        # tukPassword=input('Enter your Password: ')
 
         pass
 
